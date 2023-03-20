@@ -4,6 +4,8 @@ const connectToMongo = require('./db');
 connectToMongo();
 require('dotenv').config()
 
+const sendMail = require('./controller/sendMail')
+
 const app = express()
 const port = process.env.PORT || 5000;
 const frontendUrl = process.env.FRONTEND_URL;
@@ -11,6 +13,7 @@ app.use(cors({
   origin: ["http://localhost:3000", frontendUrl]
 }))
 app.use(express.json())
+    // sendMail.sendMail().then(result => console.log('Email sent...', result)).catch(error => console.log(error.message));
 
 //Available Routes
 app.use('/api/auth', require('./routes/auth'))
