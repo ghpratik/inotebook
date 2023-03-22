@@ -6,58 +6,16 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 var fetchUser = require('../middleware/fetchUser');
-const sendMail = require('../controller/sendMail');
 const JWT_SECRET = process.env.JWT_SIGN;
+const sendMail = require('../controller/sendMail');
 
-// const nodemailer = require("nodemailer");
-// const google = require("googleapis");
-// const CLIENT_ID = '405740759317-6tcr8hmkn01qkr0gavfdo4nb3jvv2mg6.apps.googleusercontent.com';
-// const CLIENT_SECRET = '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';
-// const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-// const REFRESH_TOKEN = '1//04OpqoPAL5W6gCgYIARAAGAQSNwF-L9IrJ-bvvSMhe4CS1UmNiHsWW5l4kkxZFVGqYUslp0luI_Yovz2zzQKuqf6aTGJScmAXCec';
-
-// const oAuth2client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
-// oAuth2client.setCredentials({ refresh_token: REFRESH_TOKEN })
-
-// async function sendMail() {
-//     try {
-//         const accessToken = await oAuth2client.getAccessToken()
-//         const transport = nodemailer.createTransport({
-//             service: 'gmail',
-//             auth: {
-//                 type: 'OAuth2',
-//                 user: 'pratik2000gaikwad@gmail.com',
-//                 clientId: CLIENT_ID,
-//                 clientSecret: CLIENT_SECRET,
-//                 refreshToken: REFRESH_TOKEN,
-//                 accessToken: accessToken
-//             }
-//         })
-
-//         const mailOptions = {
-//             from: 'iNotebook <pratik2000gaikwad@gmail.com>',
-//             to: 'smokinpubg@gmail.com',
-//             subject: "Hello form gmail using API",
-//             text: 'Hello from gmail using api',
-//             html: '<h1>Hello from gmail using API</h1>'
-//         }
-
-//         const result = await transport.sendMail(mailOptions)
-//         return result
-
-//     } catch (error) {
-//         return error
-//     }
-// }
-
-// sendMail().then(result=> console.log('Email sent...', result)).catch(error => console.log(error.message));
 
 
 //CREATE A USER USING POST : "/api/auth/createuser"  ===no login required ROUTE1
 router.post('/createuser', [
     body('name', 'Enter a valid name').isLength({ min: 3 }),
     body('email', 'Enter a valid E-mail').isEmail(),
-    body('password', 'Password must contain atleast 8 characters').isLength({ min: 8 }) //verify bhi add karna hai
+    body('password', 'Password must contain atleast 8 characters').isLength({ min: 8 }), //verify bhi add karna hai
 ], async (req, res) => {
     let success = false;
     // check validation of bad requests and send errors 
@@ -79,7 +37,8 @@ router.post('/createuser', [
         user = await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: secPass
+            password: secPass,
+            verify: "true"
         })
         const data = {
             user: {
@@ -88,7 +47,6 @@ router.post('/createuser', [
         }
         const authtoken = jwt.sign(data, JWT_SECRET);
         success = true;
-        sendMail(req.body.email, req.body.name).then(result => console.log('Email sent...', result)).catch(error => console.log(error.message));
         res.json({ success, authtoken });
     } catch (error) {
         console.log(error.message);
@@ -152,15 +110,20 @@ router.post('/getuser', fetchUser, async (req, res) => {
 })
 
 // SEND EMAIL OTP TO VERIFY MAIL USING POST: "/api/auth/mail".  no login required  ROUTE4
-router.post('/mail', fetchUser, async (req, res) => {
+
+
+router.post('/mail', [
+    body('email', 'Enter a valid E-mail').isEmail(),
+    body('name', 'Password cannot be blank').exists(),
+    body('verify', 'OTP cannot be blank').exists()
+], async (req, res) => {
+    const { email, name, verify } = req.body;
 
     try {
-        let userId = req.user.id;
-        const user = await User.findById(userId).select("-password");
-
-        res.send(user);
+        sendMail(email, name, verify).then(result => res.send(result)).catch(error => res.send(error))
+        
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).send("Internal server Error");
     }
 })

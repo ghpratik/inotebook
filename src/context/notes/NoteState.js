@@ -23,7 +23,6 @@ const NoteState = (props) => {
             }
         });
         const json = await response.json();
-        console.log(json);
         setNotes(json);
     }
     //GET USER DATA
@@ -37,7 +36,6 @@ const NoteState = (props) => {
             }
         });
         const json = await response.json();
-        console.log(json);
         setUserData(json);
     }
 
@@ -75,7 +73,6 @@ const NoteState = (props) => {
             },
         });
         const json = await response.json();
-        console.log(json);
     }
 
     //Edit a note
@@ -92,7 +89,6 @@ const NoteState = (props) => {
             body: JSON.stringify({title, description, tag}), // body data type must match "Content-Type" header
         });
         const json = await response.json();
-        console.log(json);
 
         let newNotes = JSON.parse(JSON.stringify(notes))
         // edit in client side
