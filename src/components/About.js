@@ -1,7 +1,7 @@
 import React from 'react'
 
 const About = () => {
- 
+  
   return (
     <div>
       <h1 className="text-center text-primary">iNotebook - Your notebook in the cloud</h1>

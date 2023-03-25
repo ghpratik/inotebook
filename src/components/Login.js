@@ -7,7 +7,9 @@ const Login = (props) => {
     const [credentials, setCredentials] = useState({ email: "", password: "" })
     let navigate = useNavigate();
     const handleSubmit = async (e) => {
+        props.setProgress(0);
         e.preventDefault();
+        props.setProgress(30);
         const response = await fetch(`${host}/api/auth/login`, {
             method: 'POST',
             headers: {
@@ -15,18 +17,21 @@ const Login = (props) => {
             },
             body: JSON.stringify({ email: credentials.email, password: credentials.password })
         });
+        props.setProgress(50);
         const json = await response.json()
+        props.setProgress(70);
         if (json.success) {
             //save the auth token and redirect
             localStorage.setItem('token', json.authtoken);
             props.showAlert("Logged In Successfully", "success");
+            props.setProgress(100);
             navigate("/");
-
         } else {
             props.showAlert("Invalid Credentials", "danger");
+            props.setProgress(100);
         }
-
     }
+
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
@@ -34,13 +39,13 @@ const Login = (props) => {
     //EYE ICON MECHANISM
     const password = document.querySelector('#password');
     const eye = document.querySelector('#eye');
-      const togglePassword = () => {
-          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-          password.setAttribute('type', type);
-          // toggle the eye slash icon
-          const className = eye.getAttribute('class') === 'fa-solid fa-eye' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
-          eye.setAttribute('class', className);
-      }
+    const togglePassword = () => {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        const className = eye.getAttribute('class') === 'fa-solid fa-eye' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+        eye.setAttribute('class', className);
+    }
 
 
     return (
@@ -56,8 +61,8 @@ const Login = (props) => {
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
                         <div className="d-flex align-items-center">
-                        <input type="password" className="form-control" name="password" id="password" onChange={onChange} value={credentials.password} />
-                        <i className="fa-solid fa-eye" id="eye" style={{cursor: 'pointer', marginLeft: '-30px'}} onClick={togglePassword}></i>
+                            <input type="password" className="form-control" name="password" id="password" onChange={onChange} value={credentials.password} />
+                            <i className="fa-solid fa-eye" id="eye" style={{ cursor: 'pointer', marginLeft: '-30px' }} onClick={togglePassword}></i>
                         </div>
                     </div>
                     <div className="md-3">

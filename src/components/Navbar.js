@@ -4,13 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import noteContext from '../context/notes/noteContext';
 
-const Navbar = () => {
+const Navbar = (props) => {
     const context = useContext(noteContext);
     const { userData } = context; //De-strucure karna bolte hai isko
+    const {setProgress} = props;
     let location = useLocation();
     let navigate = useNavigate();
     const handleLogout = ()=>{
+        setProgress(30);
         localStorage.removeItem('token')
+        setProgress(100);
         navigate("/login");
     }
 

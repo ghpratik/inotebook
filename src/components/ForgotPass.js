@@ -9,13 +9,13 @@ const ForgotPass = (props) => {
     const { name, email, password, confirmPassword } = credentials;
     let navigate = useNavigate();
 
-
     const handleSubmit = async (e) => {
+        props.setProgress(30);
         e.preventDefault();
         var inputOTP = document.getElementById('otp').value;
         if (inputOTP === verify) {
-
             if (password === confirmPassword) {
+                props.setProgress(50);
                 const response = await fetch(`${host}/api/auth/forgotPass`, {
                     method: 'PUT',
                     headers: {
@@ -23,21 +23,24 @@ const ForgotPass = (props) => {
                     },
                     body: JSON.stringify({ email: credentials.email, password: credentials.password })
                 });
+                props.setProgress(70);
                 const json = await response.json()
                 console.log(json)
                 if (json.success) {
                     //save the auth token and redirect
                     props.showAlert("Password Changed Successfully", "success");
+                    props.setProgress(100);
                     navigate("/login");
-
                 } else {
+                    props.setProgress(100);
                     props.showAlert("Invalid Credentials", "danger");
                 }
             } else {
+                props.setProgress(100);
                 props.showAlert("Passwords didn't match!", "danger")
             }
-
         } else {
+            props.setProgress(100);
             props.showAlert("Invalid OTP", "danger")
         }
     }
@@ -45,7 +48,6 @@ const ForgotPass = (props) => {
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
-
 
     const generateOTP = (limit) => {
         var digits = '0123456789';
@@ -58,10 +60,14 @@ const ForgotPass = (props) => {
 
     //send otp button
     const sendOTP = async (e) => {
+        props.setProgress(30);
         e.preventDefault();
         verify = generateOTP(6);
+        props.setProgress(50);
         document.getElementById('otp').removeAttribute("disabled", false);
         // send mail otp
+        props.setProgress(70);
+
         const response = await fetch(`${host}/api/auth/mail`, {
             method: 'POST',
             headers: {
@@ -69,12 +75,9 @@ const ForgotPass = (props) => {
             },
             body: JSON.stringify({ name, email, verify })
         });
+        props.setProgress(100);
         props.showAlert("OTP sent on your email", "success");
-
     }
-
-
-
 
     //EYE ICON MECHANISM
     const passwordEye = document.querySelector('#password');

@@ -5,7 +5,6 @@ const NoteItem = (props) => {
     const context = useContext(noteContext);
     const { deleteNote } = context;
     const { note, updateNote } = props;
-    console.log(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(note.date));
     return (
         <div className='col-md-3'>
             <div className="card my-3">
