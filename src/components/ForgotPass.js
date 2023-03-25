@@ -70,8 +70,6 @@ const ForgotPass = (props) => {
             },
             body: JSON.stringify({ name, email, verify })
         });
-        // const json = await response.json()
-        // console.log(json)
         props.showAlert("OTP sent on your email", "success");
 
     }
