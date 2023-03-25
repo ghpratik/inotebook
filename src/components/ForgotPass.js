@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { host } from '../App';
 
 var verify = "";
@@ -35,7 +34,7 @@ const ForgotPass = (props) => {
                     props.showAlert("Invalid Credentials", "danger");
                 }
             } else {
-                props.showAlert("Passwords didn't match!" + password + confirmPassword, "danger")
+                props.showAlert("Passwords didn't match!", "danger")
             }
 
         } else {
@@ -58,9 +57,9 @@ const ForgotPass = (props) => {
     }
 
     //send otp button
-    const sendOTP = async () => {
+    const sendOTP = async (e) => {
+        e.preventDefault();
         verify = generateOTP(6);
-        // document.getElementById('otpverify').removeAttribute("disabled", false);/
         document.getElementById('otp').removeAttribute("disabled", false);
         // send mail otp
         const response = await fetch(`${host}/api/auth/mail`, {
@@ -112,7 +111,6 @@ const ForgotPass = (props) => {
                     <div className="mb-3 d-flex align-items-center">
                         <label htmlFor="otp" className="form-label me-3 text-nowrap">Enter OTP :</label>
                         <input type="text" className="form-control me-3" id="otp" name="otp" disabled={true} />
-                        {/* <button className="btn btn-primary text-nowrap" id="otpverify" onClick={handleVerify} disabled={true}>Verify</button> */}
                     </div>
                     <div className="row">
                         <div className="mb-3 col">
