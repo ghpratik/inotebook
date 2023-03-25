@@ -96,6 +96,26 @@ const SignUp = (props) => {
     return jsx;
   }
 
+      //EYE ICON MECHANISM
+      const password = document.querySelector('#password');
+      const cpassword = document.querySelector('#confirmPassword');
+      const eye = document.querySelector('#eye');
+      const eyeConfirm = document.querySelector('#eyeConfirm');
+        const togglePassword = () => {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye slash icon
+            const className = eye.getAttribute('class') === 'fa-solid fa-eye' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            eye.setAttribute('class', className);
+        }
+        const togglecPassword = () => {
+            const type = cpassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            cpassword.setAttribute('type', type);
+            // toggle the eye slash icon
+            const className = eyeConfirm.getAttribute('class') === 'fa-solid fa-eye' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            eyeConfirm.setAttribute('class', className);
+        }
+
   return (
     <div className="container border border-dark p-3" style={{ maxWidth: '600px' }}>
       <h2 className="text-success">Create an account - iNotebook</h2>
@@ -111,11 +131,17 @@ const SignUp = (props) => {
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">Password</label>
+          <div className="d-flex align-items-center">
           <input type="password" className="form-control" id="password" name="password" onChange={onChange} minLength={8} required />
+          <i className="fa-solid fa-eye" id="eye" style={{cursor: 'pointer', marginLeft: '-30px'}} onClick={togglePassword}></i>
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+          <div className="d-flex align-items-center">
           <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" onChange={onChange} minLength={8} required />
+          <i className="fa-solid fa-eye" id="eyeConfirm" style={{cursor: 'pointer', marginLeft: '-30px'}} onClick={togglecPassword}></i>
+          </div>
         </div>
         <div className="d-flex">
           <button type="submit" className="btn btn-primary me-2">Create a New Account</button>

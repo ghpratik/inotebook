@@ -16,7 +16,6 @@ const Login = (props) => {
             body: JSON.stringify({ email: credentials.email, password: credentials.password })
         });
         const json = await response.json()
-        console.log(json)
         if (json.success) {
             //save the auth token and redirect
             localStorage.setItem('token', json.authtoken);
@@ -32,9 +31,21 @@ const Login = (props) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
 
+    //EYE ICON MECHANISM
+    const password = document.querySelector('#password');
+    const eye = document.querySelector('#eye');
+      const togglePassword = () => {
+          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+          password.setAttribute('type', type);
+          // toggle the eye slash icon
+          const className = eye.getAttribute('class') === 'fa-solid fa-eye' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+          eye.setAttribute('class', className);
+      }
+
+
     return (
         <div className="container d-flex justify-content-center">
-            <div style={{ maxWidth: '700px' }}>
+            <div style={{ maxWidth: '700px' }} className="w-100">
                 <h2 className="text-primary">Login to iNotebook</h2>
                 <form onSubmit={handleSubmit} className="border border-primary rounded px-5 py-3 d-flex flex-column">
                     <div className="mb-3">
@@ -44,11 +55,14 @@ const Login = (props) => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input type="password" className="form-control" name="password" id="password1" onChange={onChange} value={credentials.password} />
+                        <div className="d-flex align-items-center">
+                        <input type="password" className="form-control" name="password" id="password" onChange={onChange} value={credentials.password} />
+                        <i className="fa-solid fa-eye" id="eye" style={{cursor: 'pointer', marginLeft: '-30px'}} onClick={togglePassword}></i>
+                        </div>
                     </div>
                     <div className="md-3">
                         <button type="submit" className="btn btn-primary me-3">Login</button>
-                        <button className="btn btn-secondary me-3">Forgot Password</button>
+                        <Link to="/forgotPass" className="text-decoration-none text-light"><button className="btn btn-secondary me-3">Forgot Password</button></Link>
                         <Link to="/signup">Don't have an account?</Link>
                     </div>
                 </form>

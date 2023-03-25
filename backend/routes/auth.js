@@ -38,7 +38,6 @@ router.post('/createuser', [
             name: req.body.name,
             email: req.body.email,
             password: secPass,
-            verify: "true"
         })
         const data = {
             user: {
@@ -121,11 +120,53 @@ router.post('/mail', [
 
     try {
         sendMail(email, name, verify).then(result => res.send(result)).catch(error => res.send(error))
-        
+
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal server Error");
     }
 })
+
+// FORGOT PASSWORD PUT: "/api/auth/forgotPass".  no login required  ROUTE4
+
+router.put('/forgotPass', [
+    body('email', 'Enter a valid E-mail').isEmail(),
+    body('password', 'Password must contain atleast 8 characters').isLength({ min: 8 }), //verify bhi add karna hai
+], async (req, res) => {
+    let success = false;
+    // check validation of bad requests and send errors 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ success, errors: errors.array() });
+    }
+    // Check user exists with this email already
+    try {
+        let user = await User.findOne({ email: req.body.email });
+
+        if (!user) {
+            return res.status(400).json({ success, error: "Sorry a user with this email doesn't exist" })
+        }
+        //password hash and add salt
+        const salt = await bcrypt.genSalt(10);
+        secPass = await bcrypt.hash(req.body.password, salt);
+        //update pass in database
+        user.password = secPass;
+        await user.save();
+
+        // updatePass = await User.findOneAndUpdate(
+        //     { "email": req.body.email },
+        //     { "$set": { "password": request.body.password } },
+        //     { "upsert": false }
+        // );
+
+        success = true;
+        res.json({ success, user });
+    } catch (error) {
+        console.log("this error", error.message);
+        res.status(500).send("Internal server error");
+    }
+
+})
+
 
 module.exports = router

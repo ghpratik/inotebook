@@ -13,7 +13,6 @@ app.use(cors({
   origin: ["http://localhost:3000", frontendUrl]
 }))
 app.use(express.json())
-    // sendMail.sendMail().then(result => console.log('Email sent...', result)).catch(error => console.log(error.message));
 
 //Available Routes
 app.use('/api/auth', require('./routes/auth'))

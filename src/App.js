@@ -12,6 +12,7 @@ import NoteState from './context/notes/NoteState';
 import Alert from './components/Alert';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import ForgotPass from './components/ForgotPass';
 import 'bootstrap/dist/css/bootstrap.css';
 export const host = process.env.REACT_APP_HOST;
 function App() {
@@ -37,6 +38,7 @@ function App() {
               <Route exact path="/about" element={<About />} />
               <Route exact path="/login" element={<Login showAlert={showAlert} />} />
               <Route exact path="/signup" element={<SignUp showAlert={showAlert} />} />
+              <Route exact path="/forgotPass" element={<ForgotPass showAlert={showAlert} />} />
             </Routes>
           </div>
         </Router>
