@@ -3,9 +3,6 @@ require('dotenv').config()
 
 const JWT_SECRET = process.env.JWT_SIGN;
 
-// require('dotenv').config({ path: '../../.env.local' });
-// const JWT_SECRET = process.env.REACT_APP_JWT_SECRET;
-// console.log("jwt"+JWT_SECRET);
 const fetchUser = (req, res, next) => {
     // GET THE USER FORM THE JWT TOKEN AND ADD ID TO REQ OBJECT 
     const token = req.header('auth-token');
