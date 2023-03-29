@@ -20,7 +20,7 @@ async function sendMail(email, name, otp) {
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: 'pratik2000gaikwad@gmail.com',
+                user: 'inotebookofficial@gmail.com',
                 clientId: CLIENT_ID,
                 clientSecret: CLIENT_SECRET,
                 refreshToken: REFRESH_TOKEN,
@@ -29,7 +29,7 @@ async function sendMail(email, name, otp) {
         })
 
         const mailOptions = {
-            from: 'iNotebook <pratik2000gaikwad@gmail.com>',
+            from: 'iNotebook <inotebookofficial@gmail.com>',
             to: `${email}`,
             subject: "iNotebook - Signed Up",
             text: `Hi ${name}, Enter Below One Time Password to verify your E-mail. Login to iNotebook with this E-mail and Save your notes in cloud`,
