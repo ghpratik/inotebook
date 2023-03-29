@@ -1,10 +1,11 @@
-
 const nodemailer = require("nodemailer");
 const {google} = require("googleapis");
-const CLIENT_ID = '405740759317-6tcr8hmkn01qkr0gavfdo4nb3jvv2mg6.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//04DqUFOc6Fiy5CgYIARAAGAQSNwF-L9IrhkbUbKGTp3pQy4G9wiZc1pH2udEl9djsnUgkza7O3NTNVAR6LC3INQN2I0z7MUdJs8g';
+require('dotenv').config();
+
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 
 const oAuth2client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 oAuth2client.setCredentials({ refresh_token: REFRESH_TOKEN })
