@@ -5,13 +5,19 @@ const AddNote = (props) => {
 
     const context = useContext(noteContext);
     const { addNote } = context;
+    const { setProgress } = props;
+
 
     const [note, setNote] = useState({ title: "", description: "", tag: "" })
 
     const handleAddNote = (e) => {
+        setProgress(30);
         e.preventDefault();
+        setProgress(50);
         addNote(note.title, note.description, note.tag);
+        setProgress(70);
         setNote({ title: "", description: "", tag: "" })
+        setProgress(100);
         props.showAlert("Added Successfully", "success")
     }
 
