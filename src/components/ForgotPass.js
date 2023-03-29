@@ -25,7 +25,6 @@ const ForgotPass = (props) => {
                 });
                 props.setProgress(70);
                 const json = await response.json()
-                console.log(json)
                 if (json.success) {
                     //save the auth token and redirect
                     props.showAlert("Password Changed Successfully", "success");
