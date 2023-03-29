@@ -45,7 +45,7 @@ const SignUp = (props) => {
       // CREATE USER
       const { name, email, password } = credentials;
       props.setProgress(50);
-      const response = await fetch("http://localhost:5000/api/auth/createuser", {
+      const response = await fetch(`${host}/api/auth/createuser`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
