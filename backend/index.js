@@ -4,7 +4,6 @@ const connectToMongo = require('./db');
 connectToMongo();
 require('dotenv').config()
 
-const sendMail = require('./controller/sendMail')
 
 const app = express()
 const port = process.env.PORT || 5000;
